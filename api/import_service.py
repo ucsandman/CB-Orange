@@ -812,8 +812,8 @@ def import_contact_finder_prospects(db: Session, data: ContactFinderProspectsImp
                                 Contact.deleted_at.is_(None)
                             ).first()
 
-                        # Map authority level to role
-                        role = "other"
+                        # Map authority level to role (valid: decision_maker, influencer, champion, blocker, unknown)
+                        role = "unknown"
                         if sc.authority_level:
                             auth_lower = sc.authority_level.lower()
                             if "executive" in auth_lower or "superintendent" in auth_lower:
@@ -823,7 +823,9 @@ def import_contact_finder_prospects(db: Session, data: ContactFinderProspectsImp
                             elif "financial" in auth_lower:
                                 role = "influencer"
                             elif "admin" in auth_lower:
-                                role = "gatekeeper"
+                                role = "blocker"  # Administrative gatekeepers
+                            elif "support" in auth_lower:
+                                role = "unknown"
 
                         # Build notes from various fields
                         notes_parts = []
