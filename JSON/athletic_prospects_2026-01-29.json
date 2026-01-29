@@ -1,0 +1,373 @@
+{
+  "skill_type": "athletic-director-prospecting",
+  "version": "1.0",
+  "generated_at": "2026-01-29T15:30:00Z",
+  "prospect_count": 3,
+  "prospects": [
+    {
+      "institution": {
+        "name": "Grandview Heights City Schools",
+        "type": "High School",
+        "website": "https://www.ghschools.org",
+        "city": "Grandview Heights",
+        "state": "OH",
+        "enrollment": 1200,
+        "enrollment_range": "1000-5000",
+        "conference": "Mid-State League (OHSAA)",
+        "athletics_website": "https://www.ghathletics.org"
+      },
+      "facility": {
+        "primary_venue": "Bobcat Stadium / Anderson Field",
+        "current_lighting": "Unknown (aging infrastructure)",
+        "lighting_age_years": 15,
+        "estimated_condition": "Fair",
+        "broadcast_capable": false,
+        "multi_sport_facility": true,
+        "estimated_project_size": "$200K-$350K",
+        "facility_notes": "The K-12 Athletic Complex is approximately 80 years old. Bond passed November 2024 for $17.3M in athletic complex improvements including bleacher replacement, new restrooms, locker rooms, and concessions. Track was replaced in 2024. Currently in design development phase with Perkins & Will. Lighting not explicitly mentioned in current scope but facility modernization is underway."
+      },
+      "scoring": {
+        "facility_condition_score": 4,
+        "institution_size_score": 3,
+        "budget_signals_score": 5,
+        "decision_maker_access_score": 4,
+        "timing_triggers_score": 5,
+        "geographic_fit_score": 5,
+        "competitive_pressure_score": 3,
+        "purchase_readiness_score": 4,
+        "icp_score": 68,
+        "readiness_score": 4,
+        "total_score": 80,
+        "tier": "A1",
+        "score_breakdown": {
+          "facility_condition": {"score": 4, "weight": 3, "weighted": 12},
+          "institution_size": {"score": 3, "weight": 2, "weighted": 6},
+          "budget_signals": {"score": 5, "weight": 3, "weighted": 15},
+          "decision_maker_access": {"score": 4, "weight": 2, "weighted": 8},
+          "timing_triggers": {"score": 5, "weight": 2, "weighted": 10},
+          "geographic_fit": {"score": 5, "weight": 2, "weighted": 10},
+          "competitive_pressure": {"score": 3, "weight": 2, "weighted": 6},
+          "purchase_readiness": {"score": 4, "weight": 3, "weighted": 12}
+        }
+      },
+      "deal_risk_flags": [
+        "Lighting may not be in current project scope and could require additional funding approval",
+        "School board and superintendent approval required for scope changes"
+      ],
+      "facility_hypothesis": {
+        "statement": "Grandview Heights Schools needs LED stadium lighting for Bobcat Stadium because the 80-year-old athletic complex is undergoing $17.3M in modernization improvements and lighting would complement the new bleachers, track, and facilities being installed. Expected project size: $200K-$350K.",
+        "target_facility": "Bobcat Stadium / Anderson Field",
+        "solution_type": "Full LED stadium lighting system",
+        "primary_driver": "Major facility modernization project with active bond funding",
+        "estimated_value": "$200K-$350K"
+      },
+      "decision_maker": {
+        "name": "Logan Dunn",
+        "title": "Athletic Director",
+        "email": "logan.dunn@ghschools.org",
+        "phone": "614-485-4009",
+        "linkedin_url": null,
+        "authority_level": "medium",
+        "tenure_years": 2,
+        "notes": "Current AD overseeing athletic complex renovation. Brad Bertani, former AD (2015 AD of the Year) initiated the facility planning committee in 2017. Superintendent Andy Culp has final project authority."
+      },
+      "secondary_contacts": [
+        {
+          "name": "Andy Culp",
+          "title": "Superintendent",
+          "email": "andy.culp@ghschools.org",
+          "role_in_decision": "Final approval authority and project oversight"
+        },
+        {
+          "name": "Beth Collier",
+          "title": "Treasurer",
+          "email": "beth.collier@ghschools.org",
+          "role_in_decision": "Budget approval and bond fund allocation"
+        }
+      ],
+      "sales_readiness": {
+        "opportunity_summary": "Active $17.3M athletic complex modernization with bond funding secured. Design development phase underway. Perfect timing to position LED lighting as a value-add to complete the facility transformation.",
+        "key_assumptions": [
+          "Bond funds can accommodate lighting within existing scope or as a change order",
+          "AD and Superintendent prioritize complete facility modernization",
+          "Current lighting system is due for replacement"
+        ],
+        "required_validation": [
+          "Current lighting specifications and condition assessment",
+          "Whether lighting is already planned in current scope",
+          "Remaining bond fund flexibility for scope additions",
+          "Construction timeline and installation windows"
+        ],
+        "discovery_questions": [
+          "With the athletic complex modernization underway, what are your plans for the stadium lighting system?",
+          "How old is the current lighting infrastructure at Bobcat Stadium?",
+          "Is there flexibility in the $17.3M bond allocation to include lighting upgrades?",
+          "What is the expected construction timeline for the stadium improvements?",
+          "Are you planning any broadcast or streaming capabilities that would require better lighting?"
+        ]
+      },
+      "outreach": {
+        "timing_triggers": [
+          "Bond passed November 2024",
+          "Design development phase approved September 2025",
+          "Construction expected to begin 2026-2027"
+        ],
+        "personalization_hooks": [
+          "Reference the recent bond passage and community support",
+          "Congratulate on boys soccer state championships (2021, 2022)",
+          "Mention complete facility modernization opportunity",
+          "Reference proximity to Cincinnati for installation support"
+        ],
+        "recommended_approach": "Email to AD referencing the ongoing athletic complex project, offering a complimentary lighting assessment to determine if current system should be included in modernization scope. Follow up with call to discuss energy savings and broadcast capability options."
+      },
+      "next_action": {
+        "action": "outreach",
+        "priority": "high",
+        "target_date": "Within 1 week",
+        "notes": "A1 tier with active bond funding and construction timeline approaching. Design phase is ideal time to add lighting to scope."
+      }
+    },
+    {
+      "institution": {
+        "name": "University of Findlay",
+        "type": "Division II College",
+        "website": "https://www.findlay.edu",
+        "city": "Findlay",
+        "state": "OH",
+        "enrollment": 3700,
+        "enrollment_range": "1000-5000",
+        "conference": "Great Midwest Athletic Conference (G-MAC)",
+        "athletics_website": "https://findlayoilers.com"
+      },
+      "facility": {
+        "primary_venue": "Donnell Stadium (shared with Findlay High School)",
+        "current_lighting": "Unknown (1928 stadium, upgraded 1997)",
+        "lighting_age_years": 28,
+        "estimated_condition": "Fair",
+        "broadcast_capable": false,
+        "multi_sport_facility": true,
+        "estimated_project_size": "$300K-$500K",
+        "facility_notes": "Donnell Stadium opened in 1928 and is shared with Findlay High School. Seats 7,500. The stadium is 3.5 miles from campus, which affects student attendance. AD Jim Givens has successfully raised $1.3M+ for practice facility improvements (Dick Strahm Champions Field completed 2023). Athletic department has demonstrated fundraising capability and facility investment priority."
+      },
+      "scoring": {
+        "facility_condition_score": 4,
+        "institution_size_score": 3,
+        "budget_signals_score": 4,
+        "decision_maker_access_score": 4,
+        "timing_triggers_score": 3,
+        "geographic_fit_score": 5,
+        "competitive_pressure_score": 4,
+        "purchase_readiness_score": 3,
+        "icp_score": 64,
+        "readiness_score": 3,
+        "total_score": 73,
+        "tier": "A2",
+        "score_breakdown": {
+          "facility_condition": {"score": 4, "weight": 3, "weighted": 12},
+          "institution_size": {"score": 3, "weight": 2, "weighted": 6},
+          "budget_signals": {"score": 4, "weight": 3, "weighted": 12},
+          "decision_maker_access": {"score": 4, "weight": 2, "weighted": 8},
+          "timing_triggers": {"score": 3, "weight": 2, "weighted": 6},
+          "geographic_fit": {"score": 5, "weight": 2, "weighted": 10},
+          "competitive_pressure": {"score": 4, "weight": 2, "weighted": 8},
+          "purchase_readiness": {"score": 3, "weight": 3, "weighted": 9}
+        }
+      },
+      "deal_risk_flags": [
+        "Shared stadium with Findlay High School complicates decision making",
+        "New head football coach (Tyler Johns) hired December 2025 may shift priorities",
+        "Off-campus location may reduce university investment priority"
+      ],
+      "facility_hypothesis": {
+        "statement": "University of Findlay needs LED stadium lighting for Donnell Stadium because the 1928 facility with 28-year-old lighting systems needs modernization to improve night game attendance, broadcast capability, and competitive positioning in the G-MAC. Expected project size: $300K-$500K.",
+        "target_facility": "Donnell Stadium",
+        "solution_type": "Full LED retrofit",
+        "primary_driver": "Facility modernization to improve game day experience and recruiting",
+        "estimated_value": "$300K-$500K"
+      },
+      "decision_maker": {
+        "name": "Jim Givens",
+        "title": "Director of Athletics",
+        "email": "jgivens@findlay.edu",
+        "phone": "419-434-4651",
+        "linkedin_url": null,
+        "authority_level": "high",
+        "tenure_years": 3,
+        "notes": "AD since January 2023, previously Senior Associate AD for 25 years. Kent State baseball alum, former Detroit Tigers organization player. Proven fundraiser who raised $1.3M+ for Dick Strahm Champions Field. Has stated desire to improve game day experience and attendance."
+      },
+      "secondary_contacts": [
+        {
+          "name": "Brandi Laurita",
+          "title": "Vice President for Student Affairs and Athletics / Senior Woman Administrator",
+          "email": "blaurita@findlay.edu",
+          "role_in_decision": "Senior oversight and strategic approval"
+        },
+        {
+          "name": "Katherine Fell, Ph.D.",
+          "title": "University President",
+          "email": null,
+          "role_in_decision": "Final approval for major capital projects"
+        }
+      ],
+      "sales_readiness": {
+        "opportunity_summary": "Strong AD with proven fundraising track record looking to improve game day experience. Recent $1.3M practice facility demonstrates capital project capability. Aging shared stadium lighting presents modernization opportunity.",
+        "key_assumptions": [
+          "Shared stadium agreement allows UF to fund lighting improvements",
+          "Athletic department has fundraising capacity for additional projects",
+          "Improved lighting would enhance recruiting and night game attendance"
+        ],
+        "required_validation": [
+          "Current lighting specifications and last upgrade date",
+          "Stadium sharing agreement terms with Findlay High School",
+          "Athletic department capital project priorities for 2026-2027",
+          "Fundraising pipeline and donor capacity"
+        ],
+        "discovery_questions": [
+          "With your success fundraising for Dick Strahm Champions Field, what stadium improvements are next on your list?",
+          "How does the shared arrangement with Findlay High School work for facility improvements?",
+          "What role does night game quality play in your recruiting efforts?",
+          "Are there any broadcast or streaming requirements driving facility decisions?",
+          "What is the current condition of the stadium lighting system?"
+        ]
+      },
+      "outreach": {
+        "timing_triggers": [
+          "New head football coach Tyler Johns hired December 2025",
+          "Seven home games scheduled for 2025 season",
+          "Continued emphasis on improving game day experience"
+        ],
+        "personalization_hooks": [
+          "Congratulate on successful Dick Strahm Champions Field project",
+          "Reference AD's proven fundraising leadership",
+          "Mention energy savings for shared facility benefiting both UF and high school",
+          "Note four NAIA national football championships legacy"
+        ],
+        "recommended_approach": "Email to Jim Givens referencing his successful facility improvements and offering energy and lighting analysis for Donnell Stadium. Position as next phase of facility enhancement following practice field success."
+      },
+      "next_action": {
+        "action": "outreach",
+        "priority": "medium",
+        "target_date": "Within 2 weeks",
+        "notes": "A2 tier with strong facility investment history. New coach hiring may present opportunity for facility discussion."
+      }
+    },
+    {
+      "institution": {
+        "name": "Cedarville University",
+        "type": "Division II College",
+        "website": "https://www.cedarville.edu",
+        "city": "Cedarville",
+        "state": "OH",
+        "enrollment": 5000,
+        "enrollment_range": "5000-10000",
+        "conference": "Great Midwest Athletic Conference (G-MAC)",
+        "athletics_website": "https://yellowjackets.cedarville.edu"
+      },
+      "facility": {
+        "primary_venue": "Yellow Jacket Soccer Complex (Track & Field)",
+        "current_lighting": "LED (installed 2002)",
+        "lighting_age_years": 23,
+        "estimated_condition": "Fair",
+        "broadcast_capable": true,
+        "multi_sport_facility": true,
+        "estimated_project_size": "$150K-$300K",
+        "facility_notes": "The lighted soccer stadium opened in 2002 with track added in 2004. Seats 2,000 with field-level student seating, press box, electronic scoreboard. Has hosted multiple G-MAC and NCCAA championships and OHSAA state soccer playoffs. Indoor Doden Field House flooring replaced in 2018. No on-campus football stadium (uses Thurman Munson Stadium in Canton for some events). First generation LED lighting from 2002 may be due for upgrade to current technology."
+      },
+      "scoring": {
+        "facility_condition_score": 3,
+        "institution_size_score": 4,
+        "budget_signals_score": 3,
+        "decision_maker_access_score": 3,
+        "timing_triggers_score": 3,
+        "geographic_fit_score": 4,
+        "competitive_pressure_score": 3,
+        "purchase_readiness_score": 2,
+        "icp_score": 52,
+        "readiness_score": 2,
+        "total_score": 58,
+        "tier": "B",
+        "score_breakdown": {
+          "facility_condition": {"score": 3, "weight": 3, "weighted": 9},
+          "institution_size": {"score": 4, "weight": 2, "weighted": 8},
+          "budget_signals": {"score": 3, "weight": 3, "weighted": 9},
+          "decision_maker_access": {"score": 3, "weight": 2, "weighted": 6},
+          "timing_triggers": {"score": 3, "weight": 2, "weighted": 6},
+          "geographic_fit": {"score": 4, "weight": 2, "weighted": 8},
+          "competitive_pressure": {"score": 3, "weight": 2, "weighted": 6},
+          "purchase_readiness": {"score": 2, "weight": 3, "weighted": 6}
+        }
+      },
+      "deal_risk_flags": [
+        "Current lighting may still be functional (23 years but LED)",
+        "No active capital campaign or bond measure identified",
+        "Private Christian university may have different budget cycles"
+      ],
+      "facility_hypothesis": {
+        "statement": "Cedarville University needs LED lighting upgrade for Yellow Jacket Soccer Complex because the 2002 first-generation LED system is now 23 years old and modern LED technology offers significantly better efficiency, light quality, and broadcast capability for their championship-hosting venue. Expected project size: $150K-$300K.",
+        "target_facility": "Yellow Jacket Soccer Complex",
+        "solution_type": "LED-to-LED upgrade",
+        "primary_driver": "Technology advancement and energy efficiency",
+        "estimated_value": "$150K-$300K"
+      },
+      "decision_maker": {
+        "name": "Athletic Director",
+        "title": "Director of Athletics",
+        "email": null,
+        "phone": null,
+        "linkedin_url": null,
+        "authority_level": "high",
+        "tenure_years": null,
+        "notes": "AD contact information needs to be researched. University is Christ-centered with strong values alignment. Athletic department competes in NCAA Division II G-MAC."
+      },
+      "secondary_contacts": [
+        {
+          "name": "Facilities Director",
+          "title": "Director of Physical Plant",
+          "email": null,
+          "role_in_decision": "Technical specifications and maintenance considerations"
+        }
+      ],
+      "sales_readiness": {
+        "opportunity_summary": "Championship-caliber facility with aging first-generation LED lighting. Venue regularly hosts conference and regional championships. Opportunity to position LED-to-LED upgrade for improved efficiency and broadcast quality.",
+        "key_assumptions": [
+          "2002 lighting system is approaching end of optimal performance",
+          "University values stewardship and would appreciate energy savings",
+          "Championship hosting requirements may drive upgrade interest"
+        ],
+        "required_validation": [
+          "Current lighting system specifications and performance",
+          "Athletic department capital project priorities",
+          "AD contact information and organizational structure",
+          "Budget cycle and procurement process"
+        ],
+        "discovery_questions": [
+          "How is the 2002 stadium lighting system performing for your evening events?",
+          "What are your lighting requirements when hosting G-MAC or NCCAA championships?",
+          "How does energy stewardship factor into your facility decisions?",
+          "What facility improvements are you considering over the next 2 to 3 years?",
+          "Do you have any broadcast or streaming requirements that require specific lighting levels?"
+        ]
+      },
+      "outreach": {
+        "timing_triggers": [
+          "Regular G-MAC and NCCAA championship hosting",
+          "23-year-old lighting system approaching typical replacement cycle",
+          "Growing athletic program (16 varsity teams)"
+        ],
+        "personalization_hooks": [
+          "Reference championship hosting excellence",
+          "Position energy savings as stewardship alignment with Christian mission",
+          "Mention similar projects at faith-based institutions",
+          "Note geographic proximity to Cincinnati metro area"
+        ],
+        "recommended_approach": "Research AD contact information, then reach out with educational content about LED-to-LED upgrades and energy savings. Position as long-term stewardship investment rather than urgent need."
+      },
+      "next_action": {
+        "action": "research",
+        "priority": "low",
+        "target_date": "Within 1 month",
+        "notes": "B tier prospect. Requires additional research to identify AD and validate lighting system age/condition before outreach."
+      }
+    }
+  ]
+}

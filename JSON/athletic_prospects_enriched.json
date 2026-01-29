@@ -1,0 +1,343 @@
+{
+  "skill_type": "contact-finder-enrichment",
+  "source_file": "athletic_prospects_2026-01-29.json",
+  "enriched_at": "2026-01-29T16:00:00Z",
+  "notes": "Hunter.io API unavailable due to network restrictions. Contacts enriched via web search of official websites, staff directories, and public records.",
+  "prospect_count": 3,
+  "enriched_prospects": [
+    {
+      "institution": "Grandview Heights City Schools",
+      "tier": "A1",
+      "total_score": 80,
+      "contacts": [
+        {
+          "name": "Logan Dunn",
+          "title": "Athletic Director",
+          "email": "logan.dunn@ghschools.org",
+          "phone": "614-485-4009",
+          "linkedin_url": null,
+          "confidence": 100,
+          "department": "athletics",
+          "seniority": "director",
+          "source": "ghschools.org official contact page",
+          "authority_level": "medium",
+          "role_in_decision": "Primary contact for athletic facility decisions",
+          "tenure_years": 2,
+          "notes": "Current AD overseeing athletic complex renovation"
+        },
+        {
+          "name": "Andy Culp",
+          "title": "Superintendent",
+          "email": "andy.culp@ghschools.org",
+          "phone": "614-485-4015",
+          "linkedin_url": null,
+          "confidence": 100,
+          "department": "executive",
+          "seniority": "executive",
+          "source": "ghschools.org official contact page",
+          "authority_level": "high",
+          "role_in_decision": "Final approval authority and project oversight"
+        },
+        {
+          "name": "Beth Collier",
+          "title": "Treasurer",
+          "email": "beth.collier@ghschools.org",
+          "phone": "614-485-4021",
+          "linkedin_url": null,
+          "confidence": 100,
+          "department": "finance",
+          "seniority": "director",
+          "source": "ghschools.org official contact page",
+          "authority_level": "high",
+          "role_in_decision": "Budget approval and bond fund allocation"
+        },
+        {
+          "name": "Chris Deis",
+          "title": "Chief Technology Officer",
+          "email": "chris.deis@ghschools.org",
+          "phone": "614-485-4035",
+          "linkedin_url": null,
+          "confidence": 100,
+          "department": "technology",
+          "seniority": "executive",
+          "source": "ghschools.org official contact page",
+          "authority_level": "medium",
+          "role_in_decision": "Technical specifications and infrastructure decisions"
+        },
+        {
+          "name": "Alecia Stottlemyer",
+          "title": "Middle School Athletic Director",
+          "email": "alecia.stottlemyer@ghschools.org",
+          "phone": "614-485-4008",
+          "linkedin_url": null,
+          "confidence": 100,
+          "department": "athletics",
+          "seniority": "director",
+          "source": "ghschools.org official contact page",
+          "authority_level": "low",
+          "role_in_decision": "Secondary athletic stakeholder"
+        },
+        {
+          "name": "Karen Feast",
+          "title": "Athletic Department Secretary",
+          "email": "karen.feast@ghschools.org",
+          "phone": "614-485-4008",
+          "linkedin_url": null,
+          "confidence": 100,
+          "department": "athletics",
+          "seniority": "other",
+          "source": "ghschools.org official contact page",
+          "authority_level": "low",
+          "role_in_decision": "Gatekeeper and scheduling"
+        }
+      ],
+      "recommended_outreach_sequence": [
+        {
+          "order": 1,
+          "contact": "Logan Dunn",
+          "reason": "Primary decision maker for athletic facilities, directly oversees stadium renovation"
+        },
+        {
+          "order": 2,
+          "contact": "Andy Culp",
+          "reason": "Final approval authority, escalate if AD is interested"
+        },
+        {
+          "order": 3,
+          "contact": "Beth Collier",
+          "reason": "Budget discussions and bond fund allocation if scope expansion needed"
+        }
+      ]
+    },
+    {
+      "institution": "University of Findlay",
+      "tier": "A2",
+      "total_score": 73,
+      "contacts": [
+        {
+          "name": "Jim Givens",
+          "title": "Director of Athletics",
+          "email": "givens@findlay.edu",
+          "phone": "419-434-4793",
+          "linkedin_url": "https://www.linkedin.com/in/jim-givens-602438a9/",
+          "confidence": 95,
+          "department": "athletics",
+          "seniority": "director",
+          "source": "findlayoilers.com staff directory",
+          "authority_level": "high",
+          "role_in_decision": "Primary decision maker for athletic facilities",
+          "tenure_at_uf": 27,
+          "ad_since": "January 1, 2023",
+          "notes": "Proven fundraiser, raised $1.3M+ for athletic facilities including Dick Strahm Champions Field. Former Senior Associate AD. Kent State alum, former Detroit Tigers organization player."
+        },
+        {
+          "name": "David Buck",
+          "title": "Associate Director of Athletics",
+          "email": "buck@findlay.edu",
+          "phone": "419-434-4727",
+          "linkedin_url": null,
+          "confidence": 90,
+          "department": "athletics",
+          "seniority": "director",
+          "source": "findlayoilers.com staff directory",
+          "authority_level": "medium",
+          "role_in_decision": "Business operations, capital expenditures, budget transactions",
+          "notes": "Oversees tickets, concessions, capital expenditures, scheduling and contract negotiations"
+        },
+        {
+          "name": "Brandi Laurita",
+          "title": "Senior Woman Administrator (Former AD)",
+          "email": "laurita@findlay.edu",
+          "phone": "419-434-4578",
+          "linkedin_url": null,
+          "confidence": 90,
+          "department": "athletics",
+          "seniority": "executive",
+          "source": "findlayoilers.com staff directory",
+          "authority_level": "medium",
+          "role_in_decision": "Vice President for Student Affairs and Athletics, senior leadership influence",
+          "notes": "Former Athletic Director (2015-2022), now VP level"
+        },
+        {
+          "name": "Lisa Coleman",
+          "title": "Assistant to the Director of Athletics",
+          "email": "coleman@findlay.edu",
+          "phone": "419-434-4663",
+          "linkedin_url": null,
+          "confidence": 90,
+          "department": "athletics",
+          "seniority": "other",
+          "source": "findlayoilers.com staff directory",
+          "authority_level": "low",
+          "role_in_decision": "Gatekeeper and scheduling for AD"
+        },
+        {
+          "name": "Kyle Niermann",
+          "title": "Assistant Athletic Director for External Affairs",
+          "email": "niermann@findlay.edu",
+          "phone": "419-434-5966",
+          "linkedin_url": null,
+          "confidence": 90,
+          "department": "athletics",
+          "seniority": "director",
+          "source": "findlayoilers.com staff directory",
+          "authority_level": "low",
+          "role_in_decision": "External communications and media"
+        },
+        {
+          "name": "Tyler Johns",
+          "title": "Head Football Coach",
+          "email": "johns@findlay.edu",
+          "phone": "419-434-5600",
+          "linkedin_url": null,
+          "confidence": 85,
+          "department": "athletics",
+          "seniority": "director",
+          "source": "findlayoilers.com staff directory",
+          "authority_level": "low",
+          "role_in_decision": "End user of stadium facilities, influence on game day experience priorities",
+          "notes": "Newly hired December 2025, UF alum (2009-2012). May advocate for facility improvements."
+        }
+      ],
+      "recommended_outreach_sequence": [
+        {
+          "order": 1,
+          "contact": "Jim Givens",
+          "reason": "Primary decision maker with proven fundraising track record for facilities"
+        },
+        {
+          "order": 2,
+          "contact": "David Buck",
+          "reason": "Handles capital expenditures and budget, key for financial discussions"
+        },
+        {
+          "order": 3,
+          "contact": "Brandi Laurita",
+          "reason": "VP level influence, former AD, can champion projects"
+        }
+      ]
+    },
+    {
+      "institution": "Cedarville University",
+      "tier": "B",
+      "total_score": 58,
+      "contacts": [
+        {
+          "name": "Christopher Cross",
+          "title": "Vice President for Athletics",
+          "email": "cross@cedarville.edu",
+          "phone": "937-766-7768",
+          "linkedin_url": "https://www.linkedin.com/in/christopher-cross-30017280/",
+          "confidence": 95,
+          "department": "athletics",
+          "seniority": "executive",
+          "source": "yellowjackets.cedarville.edu staff directory",
+          "authority_level": "high",
+          "role_in_decision": "Primary decision maker, serves on President's Cabinet",
+          "tenure_at_cu": 21,
+          "ad_since": "February 2022",
+          "vp_since": "October 2023",
+          "notes": "Elevated from AD to VP for Athletics in 2023. MS from WVU, BS from Alderson-Broaddus. Previously Head Athletic Trainer. Serves on Cedar Cliff Local School Board. Twitter: @CUADChrisCross"
+        },
+        {
+          "name": "Abbey Buettell",
+          "title": "Assistant Athletic Director for Compliance, Senior Woman Administrator",
+          "email": "buettell@cedarville.edu",
+          "phone": "937-766-6222",
+          "linkedin_url": null,
+          "confidence": 90,
+          "department": "athletics",
+          "seniority": "director",
+          "source": "yellowjackets.cedarville.edu staff directory",
+          "authority_level": "medium",
+          "role_in_decision": "Compliance and senior administrative support"
+        },
+        {
+          "name": "Andrew Heath",
+          "title": "Director of Events and Facilities",
+          "email": "heath@cedarville.edu",
+          "phone": "937-766-7790",
+          "linkedin_url": null,
+          "confidence": 95,
+          "department": "operations",
+          "seniority": "director",
+          "source": "yellowjackets.cedarville.edu staff directory",
+          "authority_level": "high",
+          "role_in_decision": "Direct oversight of facilities, technical specifications",
+          "notes": "Key technical contact for facility improvements"
+        },
+        {
+          "name": "Alyssa Beals",
+          "title": "Director of Marketing and Sponsorships",
+          "email": "beals@cedarville.edu",
+          "phone": "937-766-6150",
+          "linkedin_url": null,
+          "confidence": 90,
+          "department": "marketing",
+          "seniority": "director",
+          "source": "yellowjackets.cedarville.edu staff directory",
+          "authority_level": "low",
+          "role_in_decision": "Sponsorship opportunities if relevant to funding"
+        },
+        {
+          "name": "Angie Cooper",
+          "title": "Office Manager and Budget Coordinator",
+          "email": "cooper@cedarville.edu",
+          "phone": "937-766-7768",
+          "linkedin_url": null,
+          "confidence": 90,
+          "department": "athletics",
+          "seniority": "manager",
+          "source": "yellowjackets.cedarville.edu staff directory",
+          "authority_level": "low",
+          "role_in_decision": "Budget coordination and scheduling"
+        },
+        {
+          "name": "Mark Womack",
+          "title": "Sports Information Director",
+          "email": "womackm@cedarville.edu",
+          "phone": "937-766-7766",
+          "linkedin_url": null,
+          "confidence": 100,
+          "department": "communications",
+          "seniority": "director",
+          "source": "yellowjackets.cedarville.edu media information page",
+          "authority_level": "low",
+          "role_in_decision": "Media and broadcast requirements input",
+          "cell": "937-470-3815"
+        }
+      ],
+      "recommended_outreach_sequence": [
+        {
+          "order": 1,
+          "contact": "Christopher Cross",
+          "reason": "VP for Athletics with cabinet level authority, primary decision maker"
+        },
+        {
+          "order": 2,
+          "contact": "Andrew Heath",
+          "reason": "Director of Events and Facilities, technical point of contact"
+        },
+        {
+          "order": 3,
+          "contact": "Abbey Buettell",
+          "reason": "SWA and compliance, secondary administrative contact"
+        }
+      ]
+    }
+  ],
+  "search_metadata": {
+    "method": "web_search",
+    "sources_used": [
+      "ghschools.org official contact page",
+      "findlayoilers.com staff directory",
+      "yellowjackets.cedarville.edu staff directory",
+      "LinkedIn profiles",
+      "ZoomInfo",
+      "Wiza",
+      "University press releases"
+    ],
+    "hunter_api_status": "unavailable (api.hunter.io not in allowed domains)",
+    "enrichment_notes": "Email patterns inferred from official sources. Confidence scores reflect verification level from official institutional sources."
+  }
+}

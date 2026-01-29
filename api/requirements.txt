@@ -1,0 +1,37 @@
+# Sportsbeams Pipeline API Dependencies
+# Python 3.11+
+
+# Web Framework
+fastapi==0.109.2
+uvicorn[standard]==0.27.1
+
+# Database
+sqlalchemy==2.0.25
+alembic==1.13.1
+
+# Validation
+pydantic==2.6.1
+pydantic-settings==2.1.0
+
+# HTTP Client (for external APIs)
+httpx==0.26.0
+
+# Background Tasks
+apscheduler==3.10.4
+
+# Utilities
+python-dotenv==1.0.1
+python-multipart==0.0.9
+
+# AI/LLM (for future use)
+anthropic==0.18.1
+
+# Email
+aiosmtplib==3.0.1
+
+# Dev/Testing
+pytest==8.0.0
+pytest-asyncio==0.23.4
+pytest-cov==4.1.0
+black==24.1.1
+ruff==0.2.1
