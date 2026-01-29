@@ -1,0 +1,291 @@
+{
+  "skill_type": "contact-finder",
+  "enrichment_date": "2026-01-29",
+  "data_source": "Web search (Hunter.io API blocked by network proxy)",
+  "prospect_count": 3,
+  "prospects": [
+    {
+      "prospect_id": 7,
+      "institution": "Geneva Area City Schools",
+      "location": "Geneva, OH",
+      "tier": "A1",
+      "score": 78,
+      "contacts": {
+        "primary_decision_maker": {
+          "name": "Jennifer Crossley",
+          "title": "Athletic Director",
+          "email": "jennifer.crossley@genevaschools.org",
+          "phone": "440-466-4831 ext. 4006",
+          "linkedin_url": null,
+          "confidence": 100,
+          "source": "Official school website (genevaeagles.com)",
+          "notes": "2023 NEOIAAA Athletic Director of the Year. Deeply involved in facility planning. Quoted extensively in media about SPIRE scheduling conflicts. 7th CVC AD to win state award since 2017.",
+          "authority_level": "HIGH",
+          "project_involvement": "Facility Planning Committee lead, presented stadium proposal to board"
+        },
+        "secondary_contacts": [
+          {
+            "name": "Dr. Paul Lombardo",
+            "title": "Superintendent",
+            "email": "paul.lombardo@genevaschools.org",
+            "phone": "440-466-4831",
+            "linkedin_url": null,
+            "confidence": 100,
+            "source": "Media interview (Star Beacon, August 2025)",
+            "notes": "Started August 2025. Led bond levy presentations. Quoted: 'With no lights, there's just no way we'll be able to get all those practices in.' 30 years education experience.",
+            "authority_level": "EXECUTIVE",
+            "project_involvement": "District spokesperson for facility bond, final approval authority"
+          },
+          {
+            "name": "Michele Krieg",
+            "title": "Board President",
+            "email": null,
+            "phone": "440-466-4831",
+            "linkedin_url": null,
+            "confidence": 70,
+            "source": "News articles",
+            "notes": "Board approval required for facility decisions. Noted scaled-back design excludes band shell, restrooms, concessions.",
+            "authority_level": "BOARD",
+            "project_involvement": "Board approval gatekeeper"
+          },
+          {
+            "name": "Shelley McDermott",
+            "title": "District Treasurer",
+            "email": null,
+            "phone": "440-466-4831",
+            "linkedin_url": null,
+            "confidence": 70,
+            "source": "News articles, board meeting",
+            "notes": "Handles financial planning, presented bond financials, identified grants. Key for budget discussions.",
+            "authority_level": "FINANCIAL",
+            "project_involvement": "Budget planning, grant identification, financial reporting"
+          }
+        ],
+        "general_contact": {
+          "phone": "440-466-4831",
+          "address": "1301 S Ridge Rd E, Geneva, OH 44041",
+          "website": "genevaschools.org"
+        }
+      },
+      "outreach_recommendations": {
+        "approach": "Direct email to jennifer.crossley@genevaschools.org",
+        "timing": "IMMEDIATE - SPIRE agreement expires June 2027",
+        "talking_points": [
+          "Reference scaled-back $5.75M facility plan proceeding after bond failure",
+          "Address superintendent's quote about lighting need for practices",
+          "Offer energy efficient LED solutions that maximize tight budget",
+          "Position lighting as component that can be phased in via grants/donations"
+        ],
+        "email_subject_suggestion": "LED Lighting Solutions for Geneva's New Athletic Facility"
+      }
+    },
+    {
+      "prospect_id": 8,
+      "institution": "School City of Mishawaka (Mishawaka High School)",
+      "location": "Mishawaka, IN",
+      "tier": "A1",
+      "score": 75,
+      "contacts": {
+        "primary_decision_maker": {
+          "name": "Evan Fras",
+          "title": "Director of Athletics",
+          "email": "efras@mishawaka.k12.in.us",
+          "phone": "574-254-7336",
+          "linkedin_url": null,
+          "confidence": 95,
+          "source": "Official school website (mishawakaschools.com), ZoomInfo",
+          "notes": "Hired June 2025, MHS Class of 2014 alum returning to alma mater. Previously Dean of Athletics at NorthWood HS. Quoted about T-Mobile contest and stadium upgrade needs. Bachelor's from IU Bloomington, Master's from Grace College.",
+          "authority_level": "HIGH",
+          "project_involvement": "Led T-Mobile contest application, stadium upgrade advocate"
+        },
+        "secondary_contacts": [
+          {
+            "name": "John DeShone",
+            "title": "Assistant Director of Athletics",
+            "email": "jdeshone@mishawaka.k12.in.us",
+            "phone": "574-254-7338",
+            "linkedin_url": null,
+            "confidence": 95,
+            "source": "Official school website",
+            "notes": "Also listed as Derrick DeShone in some sources. Key athletics staff member.",
+            "authority_level": "SUPPORT",
+            "project_involvement": "Operations support"
+          },
+          {
+            "name": "Jennifer Addison",
+            "title": "Athletic Secretary",
+            "email": "jaddison@mishawaka.k12.in.us",
+            "phone": "574-254-7335",
+            "linkedin_url": null,
+            "confidence": 95,
+            "source": "Official school website",
+            "notes": "Administrative contact, gatekeeper for athletics office",
+            "authority_level": "ADMINISTRATIVE",
+            "project_involvement": "Scheduling, administrative support"
+          },
+          {
+            "name": "Chad Brugh",
+            "title": "Principal",
+            "email": null,
+            "phone": "574-254-7300",
+            "linkedin_url": null,
+            "confidence": 90,
+            "source": "School profile page",
+            "notes": "School-level administration, may be involved in facility decisions",
+            "authority_level": "SCHOOL ADMIN",
+            "project_involvement": "School-level approval"
+          },
+          {
+            "name": "Sherry Keyser",
+            "title": "Assistant Athletic Director",
+            "email": "skeyser@mishawaka.k12.in.us",
+            "phone": null,
+            "linkedin_url": null,
+            "confidence": 85,
+            "source": "ZoomInfo",
+            "notes": "BS from IU South Bend, former teacher at Mishawaka",
+            "authority_level": "SUPPORT",
+            "project_involvement": "Athletics operations"
+          }
+        ],
+        "general_contact": {
+          "phone": "574-254-7335",
+          "fax": "574-254-7482",
+          "address": "1202 Lincoln Way East, Mishawaka, IN 46544",
+          "website": "mishawakaschools.com"
+        }
+      },
+      "outreach_recommendations": {
+        "approach": "Email to efras@mishawaka.k12.in.us",
+        "timing": "Within 1 week - 100th anniversary creates natural upgrade moment",
+        "talking_points": [
+          "Congratulate on T-Mobile Top 25 finalist status and $25K award",
+          "Reference 100th anniversary of Steele Stadium (1925-2025)",
+          "Connect LED lighting to their recent $1.5M Notre Dame-grade turf investment",
+          "Note his quote about accessibility, concessions, locker rooms, storage needs",
+          "Emphasize energy savings and modern controls"
+        ],
+        "email_subject_suggestion": "Complete Steele Stadium's 100th Anniversary Upgrade with LED Lighting"
+      }
+    },
+    {
+      "prospect_id": 9,
+      "institution": "National Trail Local Schools",
+      "location": "New Paris, OH",
+      "tier": "A2",
+      "score": 72,
+      "contacts": {
+        "primary_decision_maker": {
+          "name": "Troy Ferguson",
+          "title": "Athletic Director",
+          "email": "tferguson@nationaltrail.us",
+          "phone": "937-437-3333 ext. 1203",
+          "linkedin_url": null,
+          "confidence": 90,
+          "source": "School website staff directory, news articles",
+          "notes": "National Trail alum, 21 years at district, 5th year as AD. Led T-Mobile contest application. Quoted: 'Being a Trail grad myself, this means a lot.' Emotionally invested in winning upgrade for students.",
+          "authority_level": "HIGH",
+          "project_involvement": "T-Mobile contest lead, stadium renovation advocate"
+        },
+        "secondary_contacts": [
+          {
+            "name": "Jennifer S. Couch",
+            "title": "Superintendent",
+            "email": "jcouch@nationaltrail.us",
+            "phone": "937-437-3333",
+            "linkedin_url": null,
+            "confidence": 85,
+            "source": "News articles, Wikipedia",
+            "notes": "Appointed April 2024, former MS Principal. Quoted in media about T-Mobile contest: '$1M prize would go toward renovating the football field and stadium.' Completing superintendent certification via BGSU.",
+            "authority_level": "EXECUTIVE",
+            "project_involvement": "District spokesperson, final approval authority"
+          },
+          {
+            "name": "David Herring",
+            "title": "High School Principal",
+            "email": null,
+            "phone": "937-437-3333 ext. 1200",
+            "linkedin_url": null,
+            "confidence": 85,
+            "source": "School website",
+            "notes": "School-level administration",
+            "authority_level": "SCHOOL ADMIN",
+            "project_involvement": "School-level support"
+          },
+          {
+            "name": "Steve Behringer",
+            "title": "Assistant Athletic Director",
+            "email": null,
+            "phone": "937-437-3333",
+            "linkedin_url": null,
+            "confidence": 80,
+            "source": "School website coaches directory",
+            "notes": "Athletics operations support",
+            "authority_level": "SUPPORT",
+            "project_involvement": "Athletics operations"
+          },
+          {
+            "name": "Jean Brower",
+            "title": "Transportation/Guidance/Athletic Secretary",
+            "email": "jbrower@nationaltrail.us",
+            "phone": "937-437-3333 ext. 1202",
+            "linkedin_url": null,
+            "confidence": 90,
+            "source": "School website",
+            "notes": "Gatekeeper for athletics office",
+            "authority_level": "ADMINISTRATIVE",
+            "project_involvement": "Administrative support"
+          }
+        ],
+        "general_contact": {
+          "phone": "937-437-3333",
+          "address": "6940 Oxford-Gettysburg Rd, New Paris, OH 45347",
+          "website": "nationaltrail.k12.oh.us"
+        }
+      },
+      "outreach_recommendations": {
+        "approach": "Call or email Troy Ferguson - high emotional investment evident",
+        "timing": "Within 2 weeks - T-Mobile contest voting ended Oct 24, results announced Oct 30",
+        "talking_points": [
+          "Congratulate on being only Ohio school in T-Mobile Top 25",
+          "Reference AD Ferguson's 21-year commitment to district as alum",
+          "Address superintendent's commitment to stadium renovation",
+          "Offer flexible pricing for smaller district budget",
+          "Position as partner regardless of T-Mobile outcome"
+        ],
+        "email_subject_suggestion": "LED Lighting Partner for National Trail's Stadium Renovation"
+      }
+    }
+  ],
+  "summary": {
+    "contacts_found": 12,
+    "primary_contacts": 3,
+    "secondary_contacts": 9,
+    "verified_emails": 7,
+    "verified_phones": 8,
+    "methodology": "Hunter.io API blocked by network proxy. Used web search to verify contacts via official school websites, news articles, ZoomInfo public profiles, and staff directories.",
+    "immediate_outreach_priority": [
+      {
+        "rank": 1,
+        "name": "Jennifer Crossley",
+        "institution": "Geneva",
+        "email": "jennifer.crossley@genevaschools.org",
+        "rationale": "100% verified email, SPIRE deadline June 2027, award-winning AD, direct facility planning involvement"
+      },
+      {
+        "rank": 2,
+        "name": "Evan Fras",
+        "institution": "Mishawaka",
+        "email": "efras@mishawaka.k12.in.us",
+        "rationale": "95% verified email, T-Mobile finalist, 100th anniversary motivation, recent investments show budget"
+      },
+      {
+        "rank": 3,
+        "name": "Troy Ferguson",
+        "institution": "National Trail",
+        "email": "tferguson@nationaltrail.us",
+        "rationale": "90% verified email, only Ohio T-Mobile finalist, emotionally invested alum"
+      }
+    ]
+  }
+}

@@ -11,27 +11,41 @@ from database.models import (
 from api.import_schemas import (
     AthleticDirectorImport, ContactFinderImport, ImportResult,
     ProspectDiscoveryData, EnrichedProspect, EnrichedContact,
-    ContactFinderDirectImport, ContactFinderProspect
+    ContactFinderDirectImport, ContactFinderProspect,
+    ContactFinderProspectsImport, ContactFinderProspectVariant
 )
 
 
 def detect_skill_type(data: dict) -> str:
     """Detect the skill type from JSON data."""
     skill_type = data.get("skill_type", "")
+
+    # Check explicit skill_type first
     if skill_type == "athletic-director-prospecting":
         return "athletic-director-prospecting"
     elif skill_type == "contact-finder-enrichment":
         return "contact-finder-enrichment"
     elif skill_type == "contact-finder":
+        # contact-finder has two variants: 'contacts' array or 'prospects' array
+        if "prospects" in data and isinstance(data.get("prospects"), list):
+            return "contact-finder-prospects"  # variant with prospects array
+        elif "contacts" in data and isinstance(data.get("contacts"), list):
+            return "contact-finder"  # variant with contacts array
         return "contact-finder"
-    elif "prospects" in data:
+
+    # Fallback detection based on structure
+    if "prospects" in data:
+        # Check if it's contact-finder-prospects variant
+        prospects = data.get("prospects", [])
+        if prospects and isinstance(prospects[0].get("contacts"), dict):
+            return "contact-finder-prospects"
         return "athletic-director-prospecting"
     elif "enriched_prospects" in data:
         return "contact-finder-enrichment"
     elif "contacts" in data and isinstance(data.get("contacts"), list):
-        # Check if it looks like contact-finder format
         if data["contacts"] and "institution" in data["contacts"][0]:
             return "contact-finder"
+
     raise ValueError("Unknown skill type - cannot determine import format")
 
 
@@ -625,6 +639,244 @@ def import_contact_finder_direct(db: Session, data: ContactFinderDirectImport) -
     return result
 
 
+def import_contact_finder_prospects(db: Session, data: ContactFinderProspectsImport) -> ImportResult:
+    """Import contact-finder data with 'prospects' array variant.
+
+    This variant has a nested contacts structure within each prospect:
+    - contacts.primary_decision_maker
+    - contacts.secondary_contacts[]
+    - contacts.general_contact
+    - outreach_recommendations object
+    """
+    result = ImportResult(
+        success=True,
+        skill_type="contact-finder-prospects",
+    )
+
+    for prospect_entry in data.prospects:
+        try:
+            # Find or create prospect by institution name
+            prospect = db.query(Prospect).filter(
+                Prospect.name == prospect_entry.institution,
+                Prospect.deleted_at.is_(None)
+            ).first()
+
+            if not prospect:
+                # Create new prospect
+                # Determine venue type from institution name
+                inst_lower = prospect_entry.institution.lower()
+                if "school district" in inst_lower or "high school" in inst_lower or "schools" in inst_lower:
+                    venue_type = "high_school_5a"
+                elif "university" in inst_lower or "college" in inst_lower:
+                    venue_type = "college_d2"
+                else:
+                    venue_type = "high_school_other"
+
+                # Extract state from location if provided
+                state = "OH"  # Default
+                if prospect_entry.location:
+                    # Try to extract state from "City, ST" format
+                    parts = prospect_entry.location.split(",")
+                    if len(parts) >= 2:
+                        state_part = parts[-1].strip().upper()
+                        if state_part in STATES:
+                            state = state_part
+
+                # Build research notes from outreach recommendations
+                research_notes = None
+                if prospect_entry.outreach_recommendations:
+                    rec = prospect_entry.outreach_recommendations
+                    notes_parts = []
+                    if rec.approach:
+                        notes_parts.append(f"Approach: {rec.approach}")
+                    if rec.timing:
+                        notes_parts.append(f"Timing: {rec.timing}")
+                    if rec.talking_points:
+                        notes_parts.append("Talking Points:")
+                        for tp in rec.talking_points:
+                            notes_parts.append(f"  - {tp}")
+                    if rec.email_subject_suggestion:
+                        notes_parts.append(f"Suggested Subject: {rec.email_subject_suggestion}")
+                    research_notes = "\n".join(notes_parts)
+
+                prospect = Prospect(
+                    name=prospect_entry.institution,
+                    venue_type=venue_type,
+                    state=state,
+                    tier=map_tier(prospect_entry.tier),
+                    icp_score=prospect_entry.score,
+                    status=calculate_status_from_tier(map_tier(prospect_entry.tier), False),
+                    source="skill_import",
+                    source_date=datetime.utcnow().date(),
+                    research_notes=research_notes,
+                )
+                db.add(prospect)
+                db.flush()
+                result.prospects_created += 1
+            else:
+                # Update tier/score if provided and better
+                if prospect_entry.tier:
+                    prospect.tier = map_tier(prospect_entry.tier)
+                if prospect_entry.score and (not prospect.icp_score or prospect_entry.score > prospect.icp_score):
+                    prospect.icp_score = prospect_entry.score
+
+                # Append outreach recommendations to research notes
+                if prospect_entry.outreach_recommendations:
+                    rec = prospect_entry.outreach_recommendations
+                    notes_parts = []
+                    if rec.approach:
+                        notes_parts.append(f"Approach: {rec.approach}")
+                    if rec.timing:
+                        notes_parts.append(f"Timing: {rec.timing}")
+                    if rec.talking_points:
+                        notes_parts.append("Talking Points:")
+                        for tp in rec.talking_points:
+                            notes_parts.append(f"  - {tp}")
+                    if rec.email_subject_suggestion:
+                        notes_parts.append(f"Suggested Subject: {rec.email_subject_suggestion}")
+
+                    new_notes = "\n".join(notes_parts)
+                    if prospect.research_notes:
+                        prospect.research_notes += f"\n\n{new_notes}"
+                    else:
+                        prospect.research_notes = new_notes
+
+                result.prospects_updated += 1
+
+            result.imported_ids.append(prospect.id)
+
+            # Import contacts from nested structure
+            if prospect_entry.contacts:
+                contacts_obj = prospect_entry.contacts
+
+                # Import primary decision maker
+                if contacts_obj.primary_decision_maker:
+                    pdm = contacts_obj.primary_decision_maker
+
+                    # Check for existing contact by email
+                    existing_contact = None
+                    email = pdm.email if pdm.email and pdm.email.lower() not in ["unknown", "not found", ""] else None
+                    if email:
+                        existing_contact = db.query(Contact).filter(
+                            Contact.prospect_id == prospect.id,
+                            Contact.email == email,
+                            Contact.deleted_at.is_(None)
+                        ).first()
+
+                    # Build notes from various fields
+                    notes_parts = []
+                    if pdm.notes:
+                        notes_parts.append(pdm.notes)
+                    if pdm.authority_level:
+                        notes_parts.append(f"Authority: {pdm.authority_level}")
+                    if pdm.project_involvement:
+                        notes_parts.append(f"Project involvement: {pdm.project_involvement}")
+                    notes = " | ".join(notes_parts) if notes_parts else None
+
+                    contact_dict = {
+                        "name": pdm.name,
+                        "title": pdm.title,
+                        "role": "decision_maker",
+                        "email": email,
+                        "phone": pdm.phone if pdm.phone and pdm.phone.lower() not in ["unknown", "not found", ""] else None,
+                        "linkedin_url": pdm.linkedin_url if pdm.linkedin_url and str(pdm.linkedin_url).lower() not in ["not found", "unknown", "", "none"] else None,
+                        "is_primary": True,
+                        "notes": notes,
+                    }
+
+                    if existing_contact:
+                        for key, value in contact_dict.items():
+                            if value is not None:
+                                setattr(existing_contact, key, value)
+                        existing_contact.updated_at = datetime.utcnow()
+                        result.contacts_updated += 1
+                    else:
+                        contact = Contact(
+                            prospect_id=prospect.id,
+                            **contact_dict
+                        )
+                        db.add(contact)
+                        result.contacts_created += 1
+
+                # Import secondary contacts
+                if contacts_obj.secondary_contacts:
+                    for sc in contacts_obj.secondary_contacts:
+                        email = sc.email if sc.email and sc.email.lower() not in ["unknown", "not found", ""] else None
+
+                        # Check for existing contact by email
+                        existing_contact = None
+                        if email:
+                            existing_contact = db.query(Contact).filter(
+                                Contact.prospect_id == prospect.id,
+                                Contact.email == email,
+                                Contact.deleted_at.is_(None)
+                            ).first()
+
+                        # Map authority level to role
+                        role = "other"
+                        if sc.authority_level:
+                            auth_lower = sc.authority_level.lower()
+                            if "executive" in auth_lower or "superintendent" in auth_lower:
+                                role = "decision_maker"
+                            elif "board" in auth_lower:
+                                role = "influencer"
+                            elif "financial" in auth_lower:
+                                role = "influencer"
+                            elif "admin" in auth_lower:
+                                role = "gatekeeper"
+
+                        # Build notes from various fields
+                        notes_parts = []
+                        if sc.notes:
+                            notes_parts.append(sc.notes)
+                        if sc.authority_level:
+                            notes_parts.append(f"Authority: {sc.authority_level}")
+                        if sc.project_involvement:
+                            notes_parts.append(f"Project: {sc.project_involvement}")
+                        notes = " | ".join(notes_parts) if notes_parts else None
+
+                        contact_dict = {
+                            "name": sc.name,
+                            "title": sc.title,
+                            "role": role,
+                            "email": email,
+                            "phone": sc.phone if sc.phone and sc.phone.lower() not in ["unknown", "not found", ""] else None,
+                            "linkedin_url": sc.linkedin_url if sc.linkedin_url and str(sc.linkedin_url).lower() not in ["not found", "unknown", "", "none"] else None,
+                            "is_primary": False,
+                            "notes": notes,
+                        }
+
+                        if existing_contact:
+                            for key, value in contact_dict.items():
+                                if value is not None:
+                                    setattr(existing_contact, key, value)
+                            existing_contact.updated_at = datetime.utcnow()
+                            result.contacts_updated += 1
+                        else:
+                            contact = Contact(
+                                prospect_id=prospect.id,
+                                **contact_dict
+                            )
+                            db.add(contact)
+                            result.contacts_created += 1
+
+            # Create activity for enrichment
+            activity = Activity(
+                prospect_id=prospect.id,
+                type="note",
+                description=f"Contacts enriched from contact-finder skill (prospects variant)",
+                agent_id="import_service",
+            )
+            db.add(activity)
+
+        except Exception as e:
+            result.errors.append(f"Error processing {prospect_entry.institution}: {str(e)}")
+            result.success = False
+
+    db.commit()
+    return result
+
+
 def import_json_file(db: Session, json_data: dict) -> ImportResult:
     """Import JSON data, auto-detecting the skill type."""
     skill_type = detect_skill_type(json_data)
@@ -638,6 +890,9 @@ def import_json_file(db: Session, json_data: dict) -> ImportResult:
     elif skill_type == "contact-finder":
         parsed = ContactFinderDirectImport(**json_data)
         return import_contact_finder_direct(db, parsed)
+    elif skill_type == "contact-finder-prospects":
+        parsed = ContactFinderProspectsImport(**json_data)
+        return import_contact_finder_prospects(db, parsed)
     else:
         return ImportResult(
             success=False,

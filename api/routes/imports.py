@@ -194,6 +194,21 @@ async def preview_import(
             }
             for p in contacts
         ]
+    elif skill_type == "contact-finder-prospects":
+        prospects = json_data.get("prospects", [])
+        preview["prospect_count"] = len(prospects)
+        preview["prospects"] = [
+            {
+                "institution": p.get("institution"),
+                "tier": p.get("tier"),
+                "total_score": p.get("score"),
+                "contacts_count": (
+                    (1 if p.get("contacts", {}).get("primary_decision_maker") else 0) +
+                    len(p.get("contacts", {}).get("secondary_contacts", []))
+                ),
+            }
+            for p in prospects
+        ]
     else:
         # Fallback for unknown types - return empty prospects list
         preview["prospect_count"] = 0

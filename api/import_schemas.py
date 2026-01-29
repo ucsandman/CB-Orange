@@ -214,13 +214,89 @@ class ContactFinderProspect(BaseModel):
 
 
 class ContactFinderDirectImport(BaseModel):
-    """Root schema for contact-finder skill output (alternate format)."""
+    """Root schema for contact-finder skill output (alternate format with 'contacts' array)."""
     skill_type: str = "contact-finder"
     version: Optional[str] = None
     generated_at: Optional[str] = None
     note: Optional[str] = None
     prospect_count: Optional[int] = None
     contacts: List[ContactFinderProspect]
+    summary: Optional[dict] = None
+
+
+# ============================================================================
+# Contact Finder Skill Schema (variant with 'prospects' array and nested contacts)
+# ============================================================================
+
+class ContactFinderDecisionMaker(BaseModel):
+    """Primary decision maker from contact-finder prospects variant."""
+    name: str
+    title: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    linkedin_url: Optional[str] = None
+    confidence: Optional[int] = None
+    source: Optional[str] = None
+    notes: Optional[str] = None
+    authority_level: Optional[str] = None
+    project_involvement: Optional[str] = None
+
+
+class ContactFinderNestedSecondary(BaseModel):
+    """Secondary contact from contact-finder prospects variant."""
+    name: str
+    title: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    linkedin_url: Optional[str] = None
+    confidence: Optional[int] = None
+    source: Optional[str] = None
+    notes: Optional[str] = None
+    authority_level: Optional[str] = None
+    project_involvement: Optional[str] = None
+
+
+class ContactFinderGeneralContact(BaseModel):
+    """General contact info from contact-finder prospects variant."""
+    phone: Optional[str] = None
+    fax: Optional[str] = None
+    address: Optional[str] = None
+    website: Optional[str] = None
+
+
+class ContactFinderContactsObject(BaseModel):
+    """Nested contacts object from contact-finder prospects variant."""
+    primary_decision_maker: Optional[ContactFinderDecisionMaker] = None
+    secondary_contacts: Optional[List[ContactFinderNestedSecondary]] = None
+    general_contact: Optional[ContactFinderGeneralContact] = None
+
+
+class ContactFinderOutreachRecs(BaseModel):
+    """Outreach recommendations from contact-finder prospects variant."""
+    approach: Optional[str] = None
+    timing: Optional[str] = None
+    talking_points: Optional[List[str]] = None
+    email_subject_suggestion: Optional[str] = None
+
+
+class ContactFinderProspectVariant(BaseModel):
+    """Prospect entry from contact-finder skill (prospects variant)."""
+    prospect_id: Optional[int] = None
+    institution: str
+    location: Optional[str] = None
+    tier: Optional[str] = None
+    score: Optional[int] = None
+    contacts: Optional[ContactFinderContactsObject] = None
+    outreach_recommendations: Optional[ContactFinderOutreachRecs] = None
+
+
+class ContactFinderProspectsImport(BaseModel):
+    """Root schema for contact-finder skill output (variant with 'prospects' array)."""
+    skill_type: str = "contact-finder"
+    enrichment_date: Optional[str] = None
+    data_source: Optional[str] = None
+    prospect_count: Optional[int] = None
+    prospects: List[ContactFinderProspectVariant]
     summary: Optional[dict] = None
 
 
