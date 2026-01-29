@@ -10,17 +10,28 @@ export interface Prospect {
   venue_type: string
   state: string
   city?: string
+  address?: string
   classification?: string
   conference?: string
+  enrollment?: number
+  primary_sport?: string
   stadium_name?: string
   seating_capacity?: number
   current_lighting_type?: string
   current_lighting_age_years?: number
+  has_night_games?: boolean
+  broadcast_requirements?: string
   status: string
   tier?: string
   icp_score?: number
   constraint_hypothesis?: string
   value_proposition?: string
+  research_notes?: string
+  estimated_project_timeline?: string
+  budget_cycle_month?: number
+  source?: string
+  source_url?: string
+  source_date?: string
   created_at: string
   updated_at: string
 }
@@ -33,7 +44,11 @@ export interface Contact {
   role?: string
   email?: string
   phone?: string
+  linkedin_url?: string
   is_primary: boolean
+  last_contacted_at?: string
+  last_response_at?: string
+  notes?: string
   created_at: string
   updated_at: string
 }
@@ -44,6 +59,7 @@ export interface Activity {
   type: string
   description?: string
   agent_id?: string
+  metadata?: Record<string, unknown>
   created_at: string
 }
 
@@ -115,7 +131,7 @@ export const api = {
     return fetchAPI(`/api/v1/prospects?${searchParams}`)
   },
 
-  async getProspect(id: string): Promise<Prospect & { contacts: Contact[]; scores: ProspectScore[] }> {
+  async getProspect(id: string): Promise<Prospect & { contacts: Contact[]; scores: ProspectScore[]; recent_activities: Activity[] }> {
     return fetchAPI(`/api/v1/prospects/${id}`)
   },
 
@@ -131,15 +147,24 @@ export const api = {
   },
 
   // Contacts
-  async getContacts(prospectId?: string): Promise<{ contacts: Contact[] }> {
+  async getContacts(prospectId?: string): Promise<Contact[]> {
     const params = prospectId ? `?prospect_id=${prospectId}` : ''
     return fetchAPI(`/api/v1/contacts${params}`)
   },
 
+  async createContact(contact: Omit<Contact, 'id' | 'created_at' | 'updated_at'>): Promise<Contact> {
+    return fetchAPI('/api/v1/contacts', {
+      method: 'POST',
+      body: JSON.stringify(contact),
+    })
+  },
+
   // Activities
-  async getRecentActivities(limit = 20): Promise<Activity[]> {
-    const data = await fetchAPI<Activity[]>(`/api/v1/activities/recent?limit=${limit}`)
-    return data
+  async getActivities(prospectId?: string, limit?: number): Promise<Activity[]> {
+    const params = new URLSearchParams()
+    if (prospectId) params.set('prospect_id', prospectId)
+    if (limit) params.set('limit', String(limit))
+    return fetchAPI(`/api/v1/activities?${params}`)
   },
 
   // Agents
@@ -153,14 +178,46 @@ export const api = {
     })
   },
 
-  // Outreach
-  async getPendingApprovals(): Promise<any[]> {
-    return fetchAPI('/api/v1/outreach/pending-approvals')
+  // Activities (legacy)
+  async getRecentActivities(limit = 20): Promise<Activity[]> {
+    const data = await fetchAPI<Activity[]>(`/api/v1/activities/recent?limit=${limit}`)
+    return data
   },
 
-  async approveSequence(sequenceId: string, approvedBy: string): Promise<void> {
-    return fetchAPI(`/api/v1/outreach/sequences/${sequenceId}/approve?approved_by=${approvedBy}`, {
+  // Import
+  async importProspects(data: unknown): Promise<{
+    success: boolean
+    skill_type: string
+    prospects_created: number
+    prospects_updated: number
+    contacts_created: number
+    contacts_updated: number
+    warnings: string[]
+    errors: string[]
+  }> {
+    return fetchAPI('/api/v1/import', {
       method: 'POST',
+      body: JSON.stringify(data),
+    })
+  },
+
+  async previewImport(data: unknown): Promise<{
+    skill_type: string
+    prospect_count: number
+    prospects: Array<{
+      name?: string
+      institution?: string
+      type?: string
+      state?: string
+      tier?: string
+      score?: number
+      primary_contact_count?: number
+      secondary_contacts_count?: number
+    }>
+  }> {
+    return fetchAPI('/api/v1/import/preview', {
+      method: 'POST',
+      body: JSON.stringify(data),
     })
   },
 }
