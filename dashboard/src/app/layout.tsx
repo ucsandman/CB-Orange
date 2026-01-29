@@ -7,8 +7,8 @@ import { Header } from '@/components/layout/Header'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Sportsbeams Pipeline',
-  description: 'Marketing pipeline for Sportsbeams Lighting',
+  title: 'CB Orange Pipeline',
+  description: 'Sales pipeline for CB Orange Athletic Solutions',
 }
 
 export default function RootLayout({

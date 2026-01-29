@@ -15,7 +15,13 @@
       "Bash(powershell -Command:*)",
       "Bash(git init:*)",
       "Bash(git remote add:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial commit: Sportsbeams Pipeline Phase 1\n\nComplete Phase 1 implementation including:\n- Database schema with SQLAlchemy models \\(Prospect, Contact, Score, Activity, etc.\\)\n- FastAPI backend with REST endpoints and WebSocket support\n- Next.js 16 dashboard with prospects list, detail view, and import UI\n- JSON import system for athletic-director-prospecting and contact-finder skills\n- Watch folder for automatic file imports\n- Seed data and development tooling\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nRemove watch folder import feature\n\nDeleted scripts/watch_imports.py and related gitignore entries.\nManual import via dashboard is preferred for better tracking.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "WebFetch(domain:cborange.com)"
     ]
   }
 }

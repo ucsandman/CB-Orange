@@ -1,10 +1,10 @@
-# Sportsbeams Pipeline
+# CB Orange Pipeline
 
-Automated marketing and sales pipeline for Sportsbeams Lighting, targeting colleges and large high schools for athletic venue LED lighting installations.
+Automated marketing and sales pipeline for CB Orange Athletic Solutions, targeting colleges and large high schools for athletic venue equipment installations including LED lighting, scoreboards, and audio systems.
 
 ## Overview
 
-This system automates the prospecting, qualification, research, and outreach process for B2B athletic lighting sales. It uses a fleet of AI agents coordinated by an orchestrator to move prospects through the pipeline.
+This system automates the prospecting, qualification, research, and outreach process for B2B athletic facility sales. It uses a fleet of AI agents coordinated by an orchestrator to move prospects through the pipeline.
 
 ```
 Prospector → Hygiene → Researcher → Outreach
@@ -26,20 +26,11 @@ Prospector → Hygiene → Researcher → Outreach
 
 ```bash
 # Clone the repository
-git clone [repository-url]
-cd sportsbeams-pipeline
+git clone git@github.com:ucsandman/CB-Orange.git
+cd CB-Orange
 
-# Backend setup
-cd api
-python -m venv venv
-venv\Scripts\activate  # Windows
-pip install -r requirements.txt
-
-# Initialize database
-python -c "from database.connection import init_db; init_db()"
-
-# Start API server
-uvicorn server:app --reload --port 8765
+# Backend setup (from project root)
+python -m uvicorn api.server:app --reload --port 8765
 ```
 
 ```bash
@@ -89,7 +80,7 @@ npm run dev
 ### Prospect States
 
 ```
-identified → needs_scoring → scored → needs_research → 
+identified → needs_scoring → scored → needs_research →
 research_complete → ready_for_outreach → outreach_active → engaged
 ```
 
@@ -123,10 +114,9 @@ python scripts/run_agents.py --agent prospector --verbose
 
 ### Importing Prospects
 
-```bash
-# Import from CSV
-python scripts/import_prospects.py --file prospects.csv
-```
+Use the dashboard Import page at http://localhost:3001/import to upload JSON files from:
+- `athletic-director-prospecting` skill
+- `contact-finder` skill
 
 ### Testing
 
@@ -140,11 +130,12 @@ pytest tests/agents/test_hygiene.py
 
 ## Target Market
 
-**Sportsbeams Lighting** manufactures premium LED sports lighting with technical advantages:
-- Active cooling (490,000 hour MTBF)
-- Zero plastics (all aluminum)
-- Symmetrical lighting (no dead zones)
-- Chromabeams RGB (full spectrum + white)
+**CB Orange Athletic Solutions** (https://cborange.com) is a manufacturer distributor and factory agent representing premium athletic facility equipment:
+- Sports lighting systems
+- Scoreboards and LED displays
+- Scorers tables
+- Digital walls of fame
+- Sound systems
 
 **Target Customers:**
 - College athletics (D1, D2, D3, NAIA)

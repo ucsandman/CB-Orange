@@ -10,7 +10,6 @@ import {
   Mail,
   BarChart3,
   Settings,
-  Zap,
   Upload,
 } from 'lucide-react'
 
@@ -24,6 +23,34 @@ const navigation = [
   { name: 'Settings', href: '/settings', icon: Settings },
 ]
 
+// CB Orange logo icon (stylized design)
+function CBOrangeLogo({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <rect width="40" height="40" rx="8" fill="#F4802A" />
+      <path
+        d="M20 8C13.4 8 8 13.4 8 20s5.4 12 12 12c3.2 0 6.1-1.2 8.3-3.2"
+        stroke="white"
+        strokeWidth="3"
+        strokeLinecap="round"
+        fill="none"
+      />
+      <path
+        d="M20 32c6.6 0 12-5.4 12-12S26.6 8 20 8c-3.2 0-6.1 1.2-8.3 3.2"
+        stroke="white"
+        strokeWidth="3"
+        strokeLinecap="round"
+        fill="none"
+      />
+    </svg>
+  )
+}
+
 export function Sidebar() {
   const pathname = usePathname()
 
@@ -31,11 +58,12 @@ export function Sidebar() {
     <div className="w-64 bg-navy-900 text-white flex flex-col">
       {/* Logo */}
       <div className="p-4 border-b border-navy-800">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
-            <Zap className="w-5 h-5 text-white" />
+        <Link href="/" className="flex items-center gap-3">
+          <CBOrangeLogo className="w-10 h-10" />
+          <div className="flex flex-col">
+            <span className="text-lg font-bold text-white">CB Orange</span>
+            <span className="text-xs text-slate-400">Athletic Solutions</span>
           </div>
-          <span className="text-lg font-bold">Sportsbeams</span>
         </Link>
       </div>
 
@@ -66,7 +94,7 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="p-4 border-t border-navy-800">
-        <p className="text-xs text-slate-500">Sportsbeams Pipeline v1.0</p>
+        <p className="text-xs text-slate-500">CB Orange Pipeline v1.0</p>
       </div>
     </div>
   )

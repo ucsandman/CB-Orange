@@ -1,12 +1,14 @@
-# Sportsbeams Pipeline - Technical Reference
+# CB Orange Pipeline - Technical Reference
 
 ## Project Overview
 
-Automated marketing and sales pipeline for Sportsbeams Lighting, a professional LED sports lighting company based in Austin, Texas. This system identifies, qualifies, and nurtures prospects (colleges and large high schools) who need athletic venue lighting upgrades.
+Automated marketing and sales pipeline for CB Orange Athletic Solutions, a manufacturer distributor and factory agent representing premium athletic facility equipment based in Pittsburgh, Pennsylvania. This system identifies, qualifies, and nurtures prospects (colleges and large high schools) who need athletic venue lighting upgrades.
+
+**Company:** CB Orange Athletic Solutions, Inc. (https://cborange.com)
 
 **Target Market:** College athletics programs (D1, D2, D3, NAIA) and large high schools (5A/6A equivalent) in Ohio, Indiana, Western Pennsylvania, Northern Kentucky, and Illinois.
 
-**Product:** Premium LED sports lighting fixtures (NOVA, Supernova, Chromabeams) ranging from $50K to $500K+ per installation.
+**Products:** Sports lighting systems, scoreboards, LED displays, scorers tables, sound systems, and athletic facility equipment. Project sizes range from $50K to $500K+.
 
 ---
 
@@ -14,7 +16,7 @@ Automated marketing and sales pipeline for Sportsbeams Lighting, a professional 
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                           SPORTSBEAMS PIPELINE                              │
+│                           CB ORANGE PIPELINE                                │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
 │   ┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────┐ │
@@ -51,12 +53,8 @@ Automated marketing and sales pipeline for Sportsbeams Lighting, a professional 
 # Clone and setup
 cd C:\Projects\Sportsbeams-Pipeline
 
-# Backend setup
-cd api
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-python -m uvicorn server:app --reload --port 8765
+# Backend setup (from project root)
+python -m uvicorn api.server:app --reload --port 8765
 
 # Frontend setup (separate terminal)
 cd dashboard
@@ -76,7 +74,7 @@ npm run dev
 ## Directory Structure
 
 ```
-sportsbeams-pipeline/
+cb-orange-pipeline/
 ├── CLAUDE.md                 # This file
 ├── README.md                 # Project overview
 ├── docs/
@@ -111,8 +109,7 @@ sportsbeams-pipeline/
 │   │   └── lib/
 │   └── package.json
 └── scripts/
-    ├── seed_data.py
-    └── run_agents.py
+    └── seed_data.py
 ```
 
 ---
