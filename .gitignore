@@ -61,10 +61,5 @@ coverage/
 credentials.json
 secrets.json
 
-# Import data (keep structure, ignore actual imports)
-imports/processed/
-imports/failed/
-imports/*.json
-
 # Windows artifacts
 nul
