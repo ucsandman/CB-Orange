@@ -12,7 +12,8 @@ from api.import_schemas import (
     AthleticDirectorImport, ContactFinderImport, ImportResult,
     ProspectDiscoveryData, EnrichedProspect, EnrichedContact,
     ContactFinderDirectImport, ContactFinderProspect,
-    ContactFinderProspectsImport, ContactFinderProspectVariant
+    ContactFinderProspectsImport, ContactFinderProspectVariant,
+    ContactFinderFlatImport, ContactFinderFlatProspect
 )
 
 
@@ -26,19 +27,40 @@ def detect_skill_type(data: dict) -> str:
     elif skill_type == "contact-finder-enrichment":
         return "contact-finder-enrichment"
     elif skill_type == "contact-finder":
-        # contact-finder has two variants: 'contacts' array or 'prospects' array
+        # contact-finder has three variants:
+        # 1. 'contacts' array at root level
+        # 2. 'prospects' array with nested contacts object (primary_decision_maker)
+        # 3. 'prospects' array with flat contacts list
         if "prospects" in data and isinstance(data.get("prospects"), list):
-            return "contact-finder-prospects"  # variant with prospects array
+            prospects = data.get("prospects", [])
+            if prospects:
+                first_prospect = prospects[0]
+                contacts = first_prospect.get("contacts")
+                if isinstance(contacts, dict):
+                    # Nested structure with primary_decision_maker
+                    return "contact-finder-prospects"
+                elif isinstance(contacts, list):
+                    # Flat contacts list
+                    return "contact-finder-flat"
+            return "contact-finder-prospects"
         elif "contacts" in data and isinstance(data.get("contacts"), list):
             return "contact-finder"  # variant with contacts array
         return "contact-finder"
 
     # Fallback detection based on structure
     if "prospects" in data:
-        # Check if it's contact-finder-prospects variant
         prospects = data.get("prospects", [])
-        if prospects and isinstance(prospects[0].get("contacts"), dict):
-            return "contact-finder-prospects"
+        if prospects:
+            first_prospect = prospects[0]
+            # Check if it has institution data (athletic-director format)
+            if "institution" in first_prospect and isinstance(first_prospect.get("institution"), dict):
+                return "athletic-director-prospecting"
+            # Check contacts structure
+            contacts = first_prospect.get("contacts")
+            if isinstance(contacts, dict):
+                return "contact-finder-prospects"
+            elif isinstance(contacts, list):
+                return "contact-finder-flat"
         return "athletic-director-prospecting"
     elif "enriched_prospects" in data:
         return "contact-finder-enrichment"
@@ -887,6 +909,162 @@ def import_contact_finder_prospects(db: Session, data: ContactFinderProspectsImp
     return result
 
 
+def import_contact_finder_flat(db: Session, data: ContactFinderFlatImport) -> ImportResult:
+    """Import contact-finder data with flat contacts list variant.
+
+    This variant has a simple contacts array within each prospect:
+    - prospects[].contacts[] - flat list of all contacts
+    - prospects[].recommended_outreach_order - list of names in order
+    """
+    result = ImportResult(
+        success=True,
+        skill_type="contact-finder-flat",
+    )
+
+    for prospect_entry in data.prospects:
+        try:
+            # Find or create prospect by institution name
+            prospect = db.query(Prospect).filter(
+                Prospect.name == prospect_entry.institution,
+                Prospect.deleted_at.is_(None)
+            ).first()
+
+            if not prospect:
+                # Create new prospect
+                inst_lower = prospect_entry.institution.lower()
+                if "school district" in inst_lower or "high school" in inst_lower or "schools" in inst_lower:
+                    venue_type = "high_school_5a"
+                elif "university" in inst_lower or "college" in inst_lower:
+                    venue_type = "college_d2"
+                else:
+                    venue_type = "high_school_other"
+
+                state = map_state(prospect_entry.state)
+
+                prospect = Prospect(
+                    name=prospect_entry.institution,
+                    venue_type=venue_type,
+                    city=prospect_entry.city,
+                    state=state,
+                    tier=map_tier(prospect_entry.tier),
+                    icp_score=prospect_entry.score,
+                    status=calculate_status_from_tier(map_tier(prospect_entry.tier), False),
+                    source="skill_import",
+                    source_date=datetime.utcnow().date(),
+                )
+                db.add(prospect)
+                db.flush()
+                result.prospects_created += 1
+            else:
+                # Update tier/score if provided and better
+                if prospect_entry.tier:
+                    prospect.tier = map_tier(prospect_entry.tier)
+                if prospect_entry.score and (not prospect.icp_score or prospect_entry.score > prospect.icp_score):
+                    prospect.icp_score = prospect_entry.score
+                if prospect_entry.city and not prospect.city:
+                    prospect.city = prospect_entry.city
+                if prospect_entry.state:
+                    prospect.state = map_state(prospect_entry.state)
+
+                result.prospects_updated += 1
+
+            result.imported_ids.append(prospect.id)
+
+            # Determine primary contact from recommended_outreach_order
+            primary_contact_name = None
+            if prospect_entry.recommended_outreach_order and len(prospect_entry.recommended_outreach_order) > 0:
+                # Extract name from first entry (format: "Name (title)")
+                first_entry = prospect_entry.recommended_outreach_order[0]
+                if "(" in first_entry:
+                    primary_contact_name = first_entry.split("(")[0].strip()
+                else:
+                    primary_contact_name = first_entry.strip()
+
+            # Import contacts
+            for contact_data in prospect_entry.contacts:
+                # Skip low-confidence or unknown contacts
+                if contact_data.confidence and contact_data.confidence < 60:
+                    continue
+                if contact_data.name.lower() == "unknown":
+                    continue
+
+                email = contact_data.email if contact_data.email and contact_data.email.lower() not in ["unknown", "not found", ""] else None
+
+                # Check for existing contact by email
+                existing_contact = None
+                if email:
+                    existing_contact = db.query(Contact).filter(
+                        Contact.prospect_id == prospect.id,
+                        Contact.email == email,
+                        Contact.deleted_at.is_(None)
+                    ).first()
+
+                # Determine if this is the primary contact
+                is_primary = False
+                if primary_contact_name and contact_data.name:
+                    is_primary = primary_contact_name.lower() in contact_data.name.lower()
+
+                # Map authority level and seniority to role
+                role = "unknown"
+                if contact_data.authority_level:
+                    auth_lower = contact_data.authority_level.lower()
+                    if auth_lower == "high":
+                        role = "decision_maker"
+                    elif auth_lower == "medium":
+                        role = "influencer"
+                    elif auth_lower == "low":
+                        role = "influencer"
+                elif contact_data.seniority:
+                    sen_lower = contact_data.seniority.lower()
+                    if sen_lower in ["executive", "director"]:
+                        role = "decision_maker"
+                    elif sen_lower in ["manager", "senior"]:
+                        role = "influencer"
+
+                contact_dict = {
+                    "name": contact_data.name,
+                    "title": contact_data.title,
+                    "role": role,
+                    "email": email,
+                    "phone": contact_data.phone if contact_data.phone and contact_data.phone.lower() not in ["unknown", "not found", ""] else None,
+                    "linkedin_url": contact_data.linkedin_url if contact_data.linkedin_url and contact_data.linkedin_url.lower() not in ["not found", "unknown", ""] else None,
+                    "is_primary": is_primary,
+                    "notes": contact_data.notes,
+                }
+
+                if existing_contact:
+                    for key, value in contact_dict.items():
+                        if value is not None:
+                            setattr(existing_contact, key, value)
+                    existing_contact.updated_at = datetime.utcnow()
+                    result.contacts_updated += 1
+                else:
+                    contact = Contact(
+                        prospect_id=prospect.id,
+                        **contact_dict
+                    )
+                    db.add(contact)
+                    result.contacts_created += 1
+
+            # Create activity for enrichment
+            activity = Activity(
+                prospect_id=prospect.id,
+                type="note",
+                description=f"Contacts enriched from contact-finder skill ({len(prospect_entry.contacts)} contacts)",
+                agent_id="import_service",
+            )
+            db.add(activity)
+
+        except Exception as e:
+            db.rollback()
+            result.errors.append(f"Error processing {prospect_entry.institution}: {str(e)}")
+            result.success = False
+            return result  # Return early on error after rollback
+
+    db.commit()
+    return result
+
+
 def import_json_file(db: Session, json_data: dict) -> ImportResult:
     """Import JSON data, auto-detecting the skill type."""
     skill_type = detect_skill_type(json_data)
@@ -903,6 +1081,9 @@ def import_json_file(db: Session, json_data: dict) -> ImportResult:
     elif skill_type == "contact-finder-prospects":
         parsed = ContactFinderProspectsImport(**json_data)
         return import_contact_finder_prospects(db, parsed)
+    elif skill_type == "contact-finder-flat":
+        parsed = ContactFinderFlatImport(**json_data)
+        return import_contact_finder_flat(db, parsed)
     else:
         return ImportResult(
             success=False,

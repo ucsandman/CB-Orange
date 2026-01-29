@@ -301,6 +301,49 @@ class ContactFinderProspectsImport(BaseModel):
 
 
 # ============================================================================
+# Contact Finder Skill Schema (variant with 'prospects' array and flat contacts list)
+# ============================================================================
+
+class ContactFinderFlatContact(BaseModel):
+    """Contact from contact-finder skill (flat contacts list variant)."""
+    name: str
+    title: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    linkedin_url: Optional[str] = None
+    confidence: Optional[int] = None
+    department: Optional[str] = None
+    seniority: Optional[str] = None
+    authority_level: Optional[str] = None
+    source: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class ContactFinderFlatProspect(BaseModel):
+    """Prospect entry from contact-finder skill (flat contacts list variant)."""
+    institution: str
+    domain: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    tier: Optional[str] = None
+    score: Optional[int] = None
+    contacts: List[ContactFinderFlatContact]
+    recommended_outreach_order: Optional[List[str]] = None
+
+
+class ContactFinderFlatImport(BaseModel):
+    """Root schema for contact-finder skill output (flat contacts list variant)."""
+    skill_type: str = "contact-finder"
+    version: Optional[str] = None
+    generated_at: Optional[str] = None
+    source: Optional[str] = None
+    note: Optional[str] = None
+    prospect_count: Optional[int] = None
+    prospects: List[ContactFinderFlatProspect]
+    summary: Optional[dict] = None
+
+
+# ============================================================================
 # Generic Import Wrapper
 # ============================================================================
 
