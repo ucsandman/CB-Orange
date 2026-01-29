@@ -8,12 +8,19 @@ from pydantic import BaseModel, Field
 # Athletic Director Prospecting Skill Schema
 # ============================================================================
 
+class InstitutionLocation(BaseModel):
+    city: Optional[str] = None
+    state: Optional[str] = None
+    region: Optional[str] = None
+
+
 class InstitutionData(BaseModel):
     name: str
     type: str  # "High School", "Division II College", etc.
     website: Optional[str] = None
     city: Optional[str] = None
     state: Optional[str] = None
+    location: Optional[InstitutionLocation] = None  # Alternate nested format
     enrollment: Optional[int] = None
     enrollment_range: Optional[str] = None
     conference: Optional[str] = None
@@ -29,6 +36,17 @@ class FacilityData(BaseModel):
     multi_sport_facility: Optional[bool] = None
     estimated_project_size: Optional[str] = None
     facility_notes: Optional[str] = None
+
+
+class FacilityAssessmentData(BaseModel):
+    """Alternate facility format with assessment fields."""
+    stadium_name: Optional[str] = None
+    current_lighting: Optional[str] = None
+    lighting_age_years: Optional[str] = None  # Can be "N/A" or "Unknown"
+    lighting_condition: Optional[str] = None
+    facility_hypothesis: Optional[str] = None
+    key_signals: Optional[List[str]] = None
+    recent_facility_investments: Optional[List[str]] = None
 
 
 class ScoreBreakdownItem(BaseModel):
@@ -51,6 +69,27 @@ class ScoringData(BaseModel):
     total_score: Optional[int] = None
     tier: Optional[str] = None
     score_breakdown: Optional[dict] = None
+
+
+class ScoringBreakdownItem(BaseModel):
+    """Individual scoring dimension in alternate format."""
+    score: Optional[int] = None
+    weight: Optional[int] = None
+    weighted_score: Optional[int] = None
+    rationale: Optional[str] = None
+
+
+class ScoringBreakdownData(BaseModel):
+    """Alternate scoring format with detailed breakdowns."""
+    facility_need: Optional[ScoringBreakdownItem] = None
+    institution_size: Optional[ScoringBreakdownItem] = None
+    budget_indicators: Optional[ScoringBreakdownItem] = None
+    decision_maker_access: Optional[ScoringBreakdownItem] = None
+    timing: Optional[ScoringBreakdownItem] = None
+    geography: Optional[ScoringBreakdownItem] = None
+    competitive_landscape: Optional[ScoringBreakdownItem] = None
+    purchase_readiness: Optional[ScoringBreakdownItem] = None
+    total_score: Optional[int] = None
 
 
 class FacilityHypothesis(BaseModel):
@@ -77,7 +116,18 @@ class SecondaryContactData(BaseModel):
     title: Optional[str] = None
     email: Optional[str] = None
     phone: Optional[str] = None
+    linkedin_url: Optional[str] = None
+    confidence: Optional[int] = None
+    source: Optional[str] = None
     role_in_decision: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class DecisionMakersData(BaseModel):
+    """Alternate format with nested primary/secondary structure."""
+    primary: Optional[DecisionMakerData] = None
+    secondary: Optional[List[SecondaryContactData]] = None
+    email_pattern: Optional[str] = None
 
 
 class SalesReadinessData(BaseModel):
@@ -102,15 +152,23 @@ class NextActionData(BaseModel):
 
 class ProspectDiscoveryData(BaseModel):
     """Full prospect data from athletic-director-prospecting skill."""
+    prospect_number: Optional[int] = None
+    tier: Optional[str] = None  # Alternate location for tier
+    score: Optional[int] = None  # Alternate location for score
     institution: InstitutionData
     facility: Optional[FacilityData] = None
+    facility_assessment: Optional[FacilityAssessmentData] = None  # Alternate format
     scoring: Optional[ScoringData] = None
+    scoring_breakdown: Optional[ScoringBreakdownData] = None  # Alternate format
     deal_risk_flags: Optional[List[str]] = None
     facility_hypothesis: Optional[FacilityHypothesis] = None
     decision_maker: Optional[DecisionMakerData] = None
+    decision_makers: Optional[DecisionMakersData] = None  # Alternate format
     secondary_contacts: Optional[List[SecondaryContactData]] = None
     sales_readiness: Optional[SalesReadinessData] = None
     outreach: Optional[OutreachData] = None
+    outreach_strategy: Optional[dict] = None  # Alternate format
+    discovery_questions: Optional[List[str]] = None
     next_action: Optional[NextActionData] = None
 
 

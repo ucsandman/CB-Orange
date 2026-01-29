@@ -1,8 +1,10 @@
 """Service for importing JSON data from Claude skills into the pipeline."""
 import json
+import time
 from datetime import datetime
 from typing import Optional, Tuple
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import OperationalError
 
 from database.models import (
     Prospect, Contact, ProspectScore, Activity, AgentAuditLog,
@@ -15,6 +17,22 @@ from api.import_schemas import (
     ContactFinderProspectsImport, ContactFinderProspectVariant,
     ContactFinderFlatImport, ContactFinderFlatProspect
 )
+
+
+def _retry_on_connection_error(db: Session, func, max_retries: int = 3):
+    """Retry a database operation on connection errors."""
+    for attempt in range(max_retries):
+        try:
+            return func()
+        except OperationalError as e:
+            error_msg = str(e).lower()
+            if "ssl" in error_msg or "connection" in error_msg or "closed" in error_msg:
+                if attempt < max_retries - 1:
+                    db.rollback()
+                    time.sleep(0.5 * (attempt + 1))  # Exponential backoff
+                    continue
+            raise
+    return func()  # Final attempt
 
 
 def detect_skill_type(data: dict) -> str:
@@ -202,6 +220,48 @@ def import_athletic_director_prospects(db: Session, data: AthleticDirectorImport
                 Prospect.deleted_at.is_(None)
             ).first()
 
+            # Extract city/state from either format
+            city = prospect_data.institution.city
+            state = prospect_data.institution.state
+            if prospect_data.institution.location:
+                city = city or prospect_data.institution.location.city
+                state = state or prospect_data.institution.location.state
+
+            # Extract tier from either format
+            tier_str = None
+            if prospect_data.scoring and prospect_data.scoring.tier:
+                tier_str = prospect_data.scoring.tier
+            elif prospect_data.tier:
+                tier_str = prospect_data.tier
+
+            # Extract score from either format
+            icp_score = None
+            if prospect_data.scoring and prospect_data.scoring.icp_score:
+                icp_score = prospect_data.scoring.icp_score
+            elif prospect_data.scoring_breakdown and prospect_data.scoring_breakdown.total_score:
+                icp_score = prospect_data.scoring_breakdown.total_score
+            elif prospect_data.score:
+                icp_score = prospect_data.score
+
+            # Extract facility data from either format
+            stadium_name = None
+            current_lighting = None
+            lighting_age = None
+            if prospect_data.facility:
+                stadium_name = prospect_data.facility.primary_venue
+                current_lighting = prospect_data.facility.current_lighting
+                lighting_age = prospect_data.facility.lighting_age_years
+            elif prospect_data.facility_assessment:
+                stadium_name = prospect_data.facility_assessment.stadium_name
+                current_lighting = prospect_data.facility_assessment.current_lighting
+
+            # Extract constraint hypothesis from either format
+            constraint_hypothesis = None
+            if prospect_data.facility_hypothesis and prospect_data.facility_hypothesis.statement:
+                constraint_hypothesis = prospect_data.facility_hypothesis.statement
+            elif prospect_data.facility_assessment and prospect_data.facility_assessment.facility_hypothesis:
+                constraint_hypothesis = prospect_data.facility_assessment.facility_hypothesis
+
             # Build research notes from various fields
             research_notes_parts = []
             if prospect_data.deal_risk_flags:
@@ -213,40 +273,36 @@ def import_athletic_director_prospects(db: Session, data: AthleticDirectorImport
                     research_notes_parts.append("Required Validation:\n- " + "\n- ".join(prospect_data.sales_readiness.required_validation))
             if prospect_data.outreach and prospect_data.outreach.timing_triggers:
                 research_notes_parts.append("Timing Triggers:\n- " + "\n- ".join(prospect_data.outreach.timing_triggers))
+            # Add key signals from facility_assessment
+            if prospect_data.facility_assessment and prospect_data.facility_assessment.key_signals:
+                research_notes_parts.append("Key Signals:\n- " + "\n- ".join(prospect_data.facility_assessment.key_signals))
+            # Add discovery questions
+            if prospect_data.discovery_questions:
+                research_notes_parts.append("Discovery Questions:\n- " + "\n- ".join(prospect_data.discovery_questions))
 
             research_notes = "\n\n".join(research_notes_parts) if research_notes_parts else None
 
             # Determine if we have research
-            has_research = bool(
-                prospect_data.facility_hypothesis and
-                prospect_data.facility_hypothesis.statement
-            )
+            has_research = bool(constraint_hypothesis)
 
-            tier = map_tier(prospect_data.scoring.tier if prospect_data.scoring else None)
+            tier = map_tier(tier_str)
 
             prospect_dict = {
                 "name": prospect_data.institution.name,
                 "venue_type": map_institution_type_to_venue_type(prospect_data.institution.type),
-                "state": map_state(prospect_data.institution.state),
-                "city": prospect_data.institution.city,
+                "state": map_state(state),
+                "city": city,
                 "conference": prospect_data.institution.conference,
                 "enrollment": prospect_data.institution.enrollment,
-                "stadium_name": prospect_data.facility.primary_venue if prospect_data.facility else None,
-                "current_lighting_type": map_lighting_type(
-                    prospect_data.facility.current_lighting if prospect_data.facility else None
-                ),
-                "current_lighting_age_years": (
-                    prospect_data.facility.lighting_age_years if prospect_data.facility else None
-                ),
+                "stadium_name": stadium_name,
+                "current_lighting_type": map_lighting_type(current_lighting),
+                "current_lighting_age_years": lighting_age if isinstance(lighting_age, int) else None,
                 "broadcast_requirements": map_broadcast_requirements(
                     prospect_data.facility.broadcast_capable if prospect_data.facility else None
                 ),
                 "tier": tier,
-                "icp_score": prospect_data.scoring.icp_score if prospect_data.scoring else None,
-                "constraint_hypothesis": (
-                    prospect_data.facility_hypothesis.statement
-                    if prospect_data.facility_hypothesis else None
-                ),
+                "icp_score": icp_score,
+                "constraint_hypothesis": constraint_hypothesis,
                 "value_proposition": (
                     prospect_data.sales_readiness.opportunity_summary
                     if prospect_data.sales_readiness else None
@@ -275,52 +331,74 @@ def import_athletic_director_prospects(db: Session, data: AthleticDirectorImport
 
             result.imported_ids.append(prospect.id)
 
-            # Import primary decision maker as contact
+            # Get primary decision maker from either format
+            dm = None
             if prospect_data.decision_maker and prospect_data.decision_maker.name:
                 dm = prospect_data.decision_maker
+            elif prospect_data.decision_makers and prospect_data.decision_makers.primary:
+                dm = prospect_data.decision_makers.primary
+
+            # Import primary decision maker as contact
+            if dm and dm.name:
+                email = dm.email if dm.email and dm.email.lower() not in ["unknown", "not found", ""] else None
                 existing_contact = db.query(Contact).filter(
                     Contact.prospect_id == prospect.id,
-                    Contact.email == dm.email,
+                    Contact.email == email,
                     Contact.deleted_at.is_(None)
-                ).first() if dm.email else None
+                ).first() if email else None
 
                 if not existing_contact:
+                    linkedin = dm.linkedin_url if dm.linkedin_url and dm.linkedin_url.lower() not in ["not found", "unknown", ""] else None
                     contact = Contact(
                         prospect_id=prospect.id,
                         name=dm.name,
                         title=dm.title,
                         role=map_contact_role(dm.authority_level, None),
-                        email=dm.email,
+                        email=email,
                         phone=dm.phone,
-                        linkedin_url=dm.linkedin_url,
+                        linkedin_url=linkedin,
                         is_primary=True,
                         notes=dm.notes,
                     )
                     db.add(contact)
                     result.contacts_created += 1
 
-            # Import secondary contacts
-            if prospect_data.secondary_contacts:
-                for sc in prospect_data.secondary_contacts:
-                    existing_contact = db.query(Contact).filter(
-                        Contact.prospect_id == prospect.id,
-                        Contact.email == sc.email,
-                        Contact.deleted_at.is_(None)
-                    ).first() if sc.email else None
+            # Get secondary contacts from either format
+            secondary_contacts = prospect_data.secondary_contacts or []
+            if prospect_data.decision_makers and prospect_data.decision_makers.secondary:
+                secondary_contacts = prospect_data.decision_makers.secondary
 
-                    if not existing_contact:
-                        contact = Contact(
-                            prospect_id=prospect.id,
-                            name=sc.name,
-                            title=sc.title,
-                            role=map_contact_role(None, sc.role_in_decision),
-                            email=sc.email,
-                            phone=sc.phone,
-                            is_primary=False,
-                            notes=sc.role_in_decision,
-                        )
-                        db.add(contact)
-                        result.contacts_created += 1
+            # Import secondary contacts
+            for sc in secondary_contacts:
+                if not sc.name or sc.name.lower() == "unknown":
+                    continue
+                email = sc.email if sc.email and sc.email.lower() not in ["unknown", "not found", ""] else None
+                # Skip if email matches pattern placeholder
+                if email and "email pattern" in email.lower():
+                    email = None
+
+                existing_contact = db.query(Contact).filter(
+                    Contact.prospect_id == prospect.id,
+                    Contact.email == email,
+                    Contact.deleted_at.is_(None)
+                ).first() if email else None
+
+                if not existing_contact:
+                    linkedin = sc.linkedin_url if sc.linkedin_url and sc.linkedin_url.lower() not in ["not found", "unknown", ""] else None
+                    notes = sc.role_in_decision or sc.notes if hasattr(sc, 'notes') else sc.role_in_decision
+                    contact = Contact(
+                        prospect_id=prospect.id,
+                        name=sc.name,
+                        title=sc.title,
+                        role=map_contact_role(getattr(sc, 'authority_level', None) if hasattr(sc, 'authority_level') else None, sc.role_in_decision),
+                        email=email,
+                        phone=sc.phone,
+                        linkedin_url=linkedin,
+                        is_primary=False,
+                        notes=notes,
+                    )
+                    db.add(contact)
+                    result.contacts_created += 1
 
             # Create activity for import
             activity = Activity(
