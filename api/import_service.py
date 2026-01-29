@@ -314,8 +314,10 @@ def import_athletic_director_prospects(db: Session, data: AthleticDirectorImport
                 _import_scores(db, prospect.id, prospect_data.scoring)
 
         except Exception as e:
+            db.rollback()
             result.errors.append(f"Error importing {prospect_data.institution.name}: {str(e)}")
             result.success = False
+            return result  # Return early on error after rollback
 
     db.commit()
     return result
@@ -466,8 +468,10 @@ def import_contact_finder_enrichment(db: Session, data: ContactFinderImport) -> 
             db.add(activity)
 
         except Exception as e:
+            db.rollback()
             result.errors.append(f"Error enriching {enriched.institution}: {str(e)}")
             result.success = False
+            return result  # Return early on error after rollback
 
     db.commit()
     return result
@@ -632,8 +636,10 @@ def import_contact_finder_direct(db: Session, data: ContactFinderDirectImport) -
             db.add(activity)
 
         except Exception as e:
+            db.rollback()
             result.errors.append(f"Error processing {contact_entry.institution}: {str(e)}")
             result.success = False
+            return result  # Return early on error after rollback
 
     db.commit()
     return result
@@ -872,8 +878,10 @@ def import_contact_finder_prospects(db: Session, data: ContactFinderProspectsImp
             db.add(activity)
 
         except Exception as e:
+            db.rollback()
             result.errors.append(f"Error processing {prospect_entry.institution}: {str(e)}")
             result.success = False
+            return result  # Return early on error after rollback
 
     db.commit()
     return result

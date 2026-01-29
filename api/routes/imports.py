@@ -51,11 +51,13 @@ async def upload_json_file(
     try:
         result = import_json_file(db, json_data)
     except ValueError as e:
+        db.rollback()
         raise HTTPException(
             status_code=400,
             detail=str(e)
         )
     except Exception as e:
+        db.rollback()
         raise HTTPException(
             status_code=500,
             detail=f"Import failed: {str(e)}"
@@ -93,11 +95,13 @@ async def import_json_data(
     try:
         result = import_json_file(db, data)
     except ValueError as e:
+        db.rollback()
         raise HTTPException(
             status_code=400,
             detail=str(e)
         )
     except Exception as e:
+        db.rollback()
         raise HTTPException(
             status_code=500,
             detail=f"Import failed: {str(e)}"
