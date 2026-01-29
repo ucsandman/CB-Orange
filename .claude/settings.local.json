@@ -22,7 +22,8 @@
       "Bash(git remote set-url:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nRemove watch folder import feature\n\nDeleted scripts/watch_imports.py and related gitignore entries.\nManual import via dashboard is preferred for better tracking.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "WebFetch(domain:cborange.com)",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nRebrand to CB Orange Athletic Solutions\n\n- Update Tailwind colors to CB Orange brand \\(#F4802A, #161616\\)\n- Update dashboard metadata and sidebar with CB Orange logo\n- Update CLAUDE.md and README.md with company info\n- Reference Pittsburgh HQ and full product line\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nRebrand to CB Orange Athletic Solutions\n\n- Update Tailwind colors to CB Orange brand \\(#F4802A, #161616\\)\n- Update dashboard metadata and sidebar with CB Orange logo\n- Update CLAUDE.md and README.md with company info\n- Reference Pittsburgh HQ and full product line\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit:*)"
     ]
   }
 }
